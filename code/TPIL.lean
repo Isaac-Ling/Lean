@@ -1,7 +1,10 @@
 variable (p q r : Prop)
 
 -- commutativity of ∧ and ∨
-example : p ∧ q ↔ q ∧ p := sorry
+example : p ∧ q ↔ q ∧ p :=
+  Iff.intro
+    (λ (h : p ∧ q) => And.intro h.right h.left)
+    (λ (h : q ∧ p) => And.intro h.right h.left)
 example : p ∨ q ↔ q ∨ p := sorry
 
 -- associativity of ∧ and ∨
