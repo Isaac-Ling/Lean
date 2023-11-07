@@ -9,7 +9,16 @@ section chapter_3_exercises
   example : p ∨ q ↔ q ∨ p := sorry
 
   -- associativity of ∧ and ∨
-  example : (p ∧ q) ∧ r ↔ p ∧ (q ∧ r) := sorry
+  example : (p ∧ q) ∧ r ↔ p ∧ (q ∧ r) :=
+    Iff.intro
+      (λ (h : (p ∧ q) ∧ r) =>
+        And.intro
+          (h.left.left)
+          (And.intro h.left.right h.right))
+      (λ (h : p ∧ (q ∧ r)) =>
+        And.intro
+          (And.intro h.left h.right.left)
+          (h.right.right))
   example : (p ∨ q) ∨ r ↔ p ∨ (q ∨ r) := sorry
 
   -- distributivity
