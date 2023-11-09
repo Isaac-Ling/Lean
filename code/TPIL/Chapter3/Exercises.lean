@@ -1,13 +1,15 @@
 section chapter_3
   variable (p q r : Prop)
 
+  -- TODO: Change variable name conventions
+
   -- commutativity of ∧
   example : p ∧ q ↔ q ∧ p :=
     Iff.intro
       -- (=>)
-      (λ (h : p ∧ q) => And.intro h.right h.left)
+      (λ (h : p ∧ q) => show q ∧ p from And.intro h.right h.left)
       -- (<=)
-      (λ (h : q ∧ p) => And.intro h.right h.left)
+      (λ (h : q ∧ p) => show p ∧ q from And.intro h.right h.left)
 
   -- commutativity of ∨
   example : p ∨ q ↔ q ∨ p :=
@@ -16,16 +18,16 @@ section chapter_3
       (λ (h : p ∨ q) =>
         h.elim
           -- p => q ∨ p
-          (λ (hp : p) => Or.inr hp)
+          (λ (hp : p) => show q ∨ p from Or.inr hp)
           -- q => q ∨ p
-          (λ (hq : q) => Or.inl hq))
+          (λ (hq : q) => show q ∨ p from Or.inl hq))
       -- (<=)
       (λ (h : q ∨ p) =>
         h.elim
           -- q => p ∨ q
-          (λ (hq : q) => Or.inr hq)
+          (λ (hq : q) => show p ∨ q from Or.inr hq)
           -- p => p ∨ q
-          (λ (hp : p) => Or.inl hp))
+          (λ (hp : p) => show p ∨ q from Or.inl hp))
 
   -- associativity of ∧
   example : (p ∧ q) ∧ r ↔ p ∧ (q ∧ r) :=
@@ -41,6 +43,21 @@ section chapter_3
           (And.intro h.left h.right.left)
           (h.right.right))
 
+  -- TODO: Use have's and shows here and onwards.
+  -- associativity of ∧
+  /- example : (p ∧ q) ∧ r ↔ p ∧ (q ∧ r) :=
+    Iff.intro
+      -- (=>)
+      (λ (h : (p ∧ q) ∧ r) =>
+        have h₁ : p := h.left.left
+        have h₂ : q ∧ r := (And.intro h.left.right h.right)
+        show p ∧ (q ∧ r) from (And.intro  hqr))
+      -- (<=)
+      (λ (h : p ∧ (q ∧ r)) =>
+        And.intro
+          (And.intro h.left h.right.left)
+          (h.right.right)) -/
+
   -- associativity of ∨
   example : (p ∨ q) ∨ r ↔ p ∨ (q ∨ r) :=
     Iff.intro
@@ -51,9 +68,9 @@ section chapter_3
           (λ (hpq : p ∨ q) =>
             hpq.elim
               -- p => p ∨ (q ∨ r)
-              (λ (hp : p) => Or.inl hp)
+              (λ (hp : p) => show p ∨ (q ∨ r) from Or.inl hp)
               -- q => p ∨ (q ∨ r)
-              (λ (hq : q) => Or.inr (Or.inl hq)))
+              (λ (hq : q) => show p ∨ (q ∨ r) from Or.inr (Or.inl hq)))
           -- r => p ∨ (q ∨ r)
           (λ (hr : r) => Or.inr (Or.inr hr)))
       -- (<=)
