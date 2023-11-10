@@ -60,15 +60,28 @@ example : (p ∨ q) ∨ r ↔ p ∨ (q ∨ r) :=
             (λ (hq : q) => show (p ∨ q) ∨ r from Or.inl (Or.inr hq))
             (λ (hr : r) => show (p ∨ q) ∨ r from (Or.inr hr))))
 
--- distributivity
+-- distributivity of ∧
 example : p ∧ (q ∨ r) ↔ (p ∧ q) ∨ (p ∧ r) :=
   Iff.intro
     -- (=>)
-    (sorry)
+    (λ (h : p ∧ (q ∨ r)) =>
+      have hp : p := h.left
+      h.right.elim
+        (λ (hq : q) => show (p ∧ q) ∨ (p ∧ r) from Or.inl (And.intro hp hq))
+        (λ (hr : r) => show (p ∧ q) ∨ (p ∧ r) from Or.inr (And.intro hp hr)))
     -- (<=)
-    (sorry)
+    (λ (h : (p ∧ q) ∨ (p ∧ r)) =>
+      have hp : p :=
+        h.elim
+          (λ (hpq : p ∧ q) => show p from hpq.left)
+          (λ (hpr : p ∧ r) => show p from hpr.left)
+      have hqr : q ∨ r :=
+        h.elim
+          (λ (hpq : p ∧ q) => Or.inl hpq.right)
+          (λ (hpr : p ∧ r) => Or.inr hpr.right)
+      And.intro hp hqr)
 
--- distributivity
+-- distributivity of ∨
 example : p ∨ (q ∧ r) ↔ (p ∨ q) ∧ (p ∨ r) := sorry
 
 -- other properties
