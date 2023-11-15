@@ -81,13 +81,23 @@ example : p ∧ (q ∨ r) ↔ (p ∧ q) ∨ (p ∧ r) :=
           (λ (hpr : p ∧ r) => Or.inr hpr.right)
       And.intro hp hqr)
 
--- distributivity of ∨
-example : p ∨ (q ∧ r) ↔ (p ∨ q) ∧ (p ∨ r) := sorry
+-- distributivity of ¬
+example : ¬(p ∨ q) ↔ ¬p ∧ ¬q :=
+  Iff.intro
+    -- (=>)
+    (λ (nhpq : ¬(p ∨ q)) =>
+      And.intro
+        (λ (hp : p) => show False from nhpq (show p ∨ q from Or.inl hp))
+        (λ (hq : q) => show False from nhpq (show p ∨ q from Or.inr hq)))
+    -- (<=)
+    (λ (hnpnq : ¬p ∧ ¬q) =>
+      λ (hpq : p ∨ q) =>
+        show False from sorry)
 
--- other properties
+-- TODO
+example : p ∨ (q ∧ r) ↔ (p ∨ q) ∧ (p ∨ r) := sorry
 example : (p → (q → r)) ↔ (p ∧ q → r) := sorry
 example : ((p ∨ q) → r) ↔ (p → r) ∧ (q → r) := sorry
-example : ¬(p ∨ q) ↔ ¬p ∧ ¬q := sorry
 example : ¬p ∨ ¬q → ¬(p ∧ q) := sorry
 example : ¬(p ∧ ¬p) := sorry
 example : p ∧ ¬q → ¬(p → q) := sorry
