@@ -45,8 +45,10 @@ example : (∀ x, r → p x) ↔ (r → ∀ x, p x) := sorry
 -- 3
 variable (men : Type) (barber : men)
 variable (shaves : men → men → Prop)
-
-example (h : ∀ x : men, shaves barber x ↔ ¬ shaves x x) : False := sorry
+example (h : ∀ x : men, shaves barber x ↔ ¬ shaves x x) : False :=
+  absurd
+    ()
+    (sorry)
 
 -- 4
 def even (n : Nat) : Prop := sorry
