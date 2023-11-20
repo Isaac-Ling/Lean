@@ -46,12 +46,17 @@ example : (∀ x, r → p x) ↔ (r → ∀ x, p x) := sorry
 variable (men : Type) (barber : men)
 variable (shaves : men → men → Prop)
 example (h : ∀ x : men, shaves barber x ↔ ¬ shaves x x) : False :=
-  absurd
-    ()
-    (sorry)
+  (em (shaves barber barber)).elim
+    (show shaves barber barber → False from
+      fun (hs : shaves barber barber) => ((h barber).mp hs hs))
+    (show ¬ shaves barber barber → False from
+      fun (hns : ¬ shaves barber barber) =>
+        absurd
+          ((h barber).mpr hns)
+          (hns))
 
 -- 4
-def even (n : Nat) : Prop := sorry
+def even (n : Nat) : (∃ m : Nat, n = 2 * m) := sorry
 def prime (n : Nat) : Prop := sorry
 def infinitely_many_primes : Prop := sorry
 def Fermat_prime (n : Nat) : Prop := sorry
