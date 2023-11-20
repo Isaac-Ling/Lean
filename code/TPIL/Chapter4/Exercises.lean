@@ -56,9 +56,15 @@ example (h : ∀ x : men, shaves barber x ↔ ¬ shaves x x) : False :=
           (hns))
 
 -- 4
-def even (n : Nat) : (∃ m : Nat, n = 2 * m) := sorry
-def prime (n : Nat) : Prop := sorry
-def infinitely_many_primes : Prop := sorry
+def even (n : Nat) : Prop :=
+  ∃ m : Nat, n = 2 * m
+
+def prime (n : Nat) : Prop :=
+  n > 1 ∧ ¬ (∃m : Nat, (m ≠ n ∧ m ≠ 1) ∧ (∃l : Nat, n = m * l))
+
+def infinitely_many_primes : Prop :=
+  (∀ n : Nat, ∃m : Nat, m > n ∧ prime m)
+
 def Fermat_prime (n : Nat) : Prop := sorry
 def infinitely_many_Fermat_primes : Prop := sorry
 def goldbach_conjecture : Prop := sorry
