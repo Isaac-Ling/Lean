@@ -59,6 +59,9 @@ example (h : ∀ x : men, shaves barber x ↔ ¬ shaves x x) : False :=
 def even (n : Nat) : Prop :=
   ∃ m : Nat, n = 2 * m
 
+example (n : Nat) (m : Nat) (h : even n) : even (n * m) :=
+  sorry
+
 def prime (n : Nat) : Prop :=
   n > 1 ∧ ¬ (∃m : Nat, (m ≠ n ∧ m ≠ 1) ∧ (∃l : Nat, n = m * l))
 

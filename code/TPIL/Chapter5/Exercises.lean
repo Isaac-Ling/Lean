@@ -7,10 +7,10 @@ example : p ∧ q ↔ q ∧ p := by
   apply Iff.intro
   case mp =>
     intro h
-    apply And.intro h.right h.left
+    exact ⟨h.right, h.left⟩
   case mpr =>
     intro h
-    apply And.intro h.right h.left
+    exact ⟨h.right, h.left⟩
 
 -- commutativity of ∨
 example : p ∨ q ↔ q ∨ p :=
