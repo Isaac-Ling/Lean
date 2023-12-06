@@ -1,5 +1,8 @@
-import MIL.Common
+import Mathlib.Tactic
+import Mathlib.Util.Delaborators
 import Mathlib.Data.Real.Basic
+set_option warningAsError false
+
 -- An example.
 example (a b c : ℝ) : a * b * c = b * (a * c) := by
   rw [mul_comm a b]
