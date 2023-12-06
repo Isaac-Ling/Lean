@@ -59,8 +59,18 @@ example (h : ∀ x : men, shaves barber x ↔ ¬ shaves x x) : False :=
 def even (n : Nat) : Prop :=
   ∃ m : Nat, n = 2 * m
 
-example (n : Nat) (m : Nat) (h : even n) : even (n * m) :=
-  sorry
+-- Purely term-style proof that n * m is even if n is even
+example (n : Nat) (m : Nat) : even n → even (n * m) :=
+  fun (h : even n) =>
+    -- Write n = 2k, k ∈ ℕ
+    let ⟨k, (hk : n = 2 * k)⟩ := h
+    show even (n * m) from
+      Exists.intro
+        (k * m)
+        (calc
+          n * m = n * m       := rfl
+          _     = (2 * k) * m := congrArg (· * m) hk
+          _     = 2 * (k * m) := Nat.mul_assoc 2 k m)
 
 def prime (n : Nat) : Prop :=
   n > 1 ∧ ¬ (∃m : Nat, (m ≠ n ∧ m ≠ 1) ∧ (∃l : Nat, n = m * l))
