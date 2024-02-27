@@ -87,7 +87,10 @@ theorem neg_zero : (-0 : R) = 0 := by
   rw [add_zero]
 
 theorem neg_neg (a : R) : - -a = a := by
-  sorry
+  have h : - -a + -a = 0 := by
+    apply add_left_neg (-a)
+  rw [← add_neg_cancel_right 0 a] at h
+  rw [add_right_cancel h, add_comm, add_zero]
 
 end MyRing
 
@@ -110,13 +113,13 @@ namespace MyRing
 variable {R : Type*} [Ring R]
 
 theorem self_sub (a : R) : a - a = 0 := by
-  sorry
+  rw [← add_right_neg a, sub_eq_add_neg]
 
 theorem one_add_one_eq_two : 1 + 1 = (2 : R) := by
   norm_num
 
 theorem two_mul (a : R) : 2 * a = a + a := by
-  sorry
+  rw [← one_add_one_eq_two, add_mul, one_mul]
 
 end MyRing
 
