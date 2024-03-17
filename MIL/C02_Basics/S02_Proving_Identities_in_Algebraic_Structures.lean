@@ -140,16 +140,25 @@ variable {G : Type*} [Group G]
 
 namespace MyGroup
 
+lemma idem_eq_one {a : G} (h : a = a * a) : a = 1 := by
+  have h1 : a⁻¹ * a = a⁻¹ * a * a := by
+    nth_rewrite 2 [h]
+    rw [← mul_assoc]
+  rw [mul_left_inv a, one_mul] at h1
+  exact Eq.symm h1
+
 theorem mul_right_inv (a : G) : a * a⁻¹ = 1 := by
-  have h : a * a⁻¹ * a = 1 * a := by
-    rw [mul_assoc, mul_left_inv, ]
-  rw [] at h
+  have h : (a * a⁻¹) = (a * a⁻¹) * (a * a⁻¹) := by
+    rw [mul_assoc, ← mul_assoc a⁻¹, mul_left_inv, one_mul]
+  exact idem_eq_one h
 
 theorem mul_one (a : G) : a * 1 = a := by
   rw [← mul_left_inv a, ← mul_assoc, mul_right_inv, one_mul]
 
 theorem mul_inv_rev (a b : G) : (a * b)⁻¹ = b⁻¹ * a⁻¹ := by
-  sorry
+  have h : b⁻¹ * a⁻¹ * (a * b) * (a * b)⁻¹ = (a * b)⁻¹ := by
+    rw [mul_assoc, mul_assoc, ← mul_assoc a⁻¹, ← mul_assoc a⁻¹, mul_left_inv, one_mul, ← mul_assoc, mul_left_inv, one_mul]
+  rw [← h, mul_assoc, mul_right_inv, mul_one]
 
 end MyGroup
 
