@@ -73,13 +73,16 @@ lemma divides_two_nums {m a b : ℤ} (m_div_a : m | a) (m_div_b : m | b) : ∀ �
   -- Then m divides α * a + β * b
   exact Exists.intro (α * γ + β * δ) m_factors_linear_comb
 
---theorem prime_factorisation {m : ℤ} (m_gt_two : m > 2) : ∃ factorisation : List ℕ,  := by
---  sorry
+-- Product of primes
+theorem prime_factorisation {m : ℤ} (m_gt_two : m > 2) : ∃ factorisation : List ℕ, List.prod factorisation = m ∧ (∀ n ∈ factorisation, prime n) := by
+  sorry
 
 def common_multiple {a : ℕ} (m n : ℕ) :=
   m | a ∧ n | a
 
 def coprime (m n : ℕ) :=
   gcd m n = 1
+
+def test := Nat.factors
 
 end Prime_Factorisation
