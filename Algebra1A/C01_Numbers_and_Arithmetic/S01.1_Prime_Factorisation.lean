@@ -75,6 +75,8 @@ lemma divides_two_nums {m a b : ℤ} (m_div_a : m | a) (m_div_b : m | b) : ∀ �
 
 -- Product of primes
 theorem prime_factorisation {m : ℤ} (m_gt_two : m > 2) : ∃ factorisation : List ℕ, List.prod factorisation = m ∧ (∀ n ∈ factorisation, prime n) := by
+  induction' m with m ih
+  · sorry
   sorry
 
 end Prime_Factorisation
