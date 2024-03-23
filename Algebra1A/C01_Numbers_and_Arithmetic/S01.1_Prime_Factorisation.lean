@@ -9,7 +9,7 @@ def divides (a b : ℤ) : Prop :=
 -- a | b ↔ a divides b
 infix:50 " | " => divides
 
-def prime (p : ℕ) :=
+def prime (p : ℕ) : Prop :=
   p ≥ 2 ∧ ∀ a : ℕ, ((a | p) → (a = 1 ∨ a = p))
 
 lemma divides_both_ways {a b : ℤ} (a_div_b : a | b) (b_div_a : b | a) : (a = b) ∨ (a = -b) := by
@@ -75,8 +75,33 @@ lemma divides_two_nums {m a b : ℤ} (m_div_a : m | a) (m_div_b : m | b) : ∀ �
 
 -- Product of primes
 theorem prime_factorisation {m : ℤ} (m_gt_two : m > 2) : ∃ factorisation : List ℕ, List.prod factorisation = m ∧ (∀ n ∈ factorisation, prime n) := by
-  induction' m with m ih
-  · sorry
+  sorry
+
+def common_multiple (a m n : ℕ) : Prop :=
+  m | a ∧ n | a
+
+def is_lcm (l m n : ℕ) : Prop := common_multiple l m n ∧ ∀ q : ℕ, (common_multiple q m n → q ≥ l)
+
+def common_divisor (a m n : ℕ) : Prop :=
+  a | m ∧ a | n
+
+def is_gcd (g m n : ℕ) : Prop := common_multiple g m n ∧ ∀ q : ℕ, (common_multiple q m n → q ≤ g)
+
+def coprime (m n : ℕ) : Prop :=
+  is_gcd 1 m n
+
+lemma div_by_gcd_coprime {m n g : ℕ} (g_gcd : is_gcd g m n) : coprime (m / g) (n / g) := by
+  obtain ⟨g_common_mul, g_lowest_common_mul⟩ := g_gcd
+  obtain ⟨m_div_g, n_div_g⟩ := g_common_mul
+  obtain ⟨k, m_factors_g⟩ := m_div_g
+  obtain ⟨l, n_factors_g⟩ := n_div_g
+
+  unfold coprime is_gcd common_multiple divides
+  constructor
+  · constructor
+    · use k
+      sorry
+    · sorry
   sorry
 
 end Prime_Factorisation
