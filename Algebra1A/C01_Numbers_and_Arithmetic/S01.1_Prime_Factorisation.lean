@@ -74,8 +74,10 @@ lemma divides_two_nums {m a b : ℤ} (m_div_a : m | a) (m_div_b : m | b) : ∀ �
   exact Exists.intro (α * γ + β * δ) m_factors_linear_comb
 
 -- Product of primes
-theorem prime_factorisation {m : ℤ} (m_gt_two : m > 2) : ∃ factorisation : List ℕ, List.prod factorisation = m ∧ (∀ n ∈ factorisation, prime n) := by
-  sorry
+theorem prime_factorisation {m : ℕ} (m_gt_two : m > 2) : ∃ factorisation : List ℕ, List.prod factorisation = m ∧ (∀ n ∈ factorisation, prime n) := by
+  induction' m with m ih
+  · sorry
+  · sorry
 
 def common_multiple (a m n : ℕ) : Prop :=
   m | a ∧ n | a
