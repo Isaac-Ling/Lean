@@ -3,6 +3,8 @@ import Mathlib.Tactic
 
 section Prime_Factorisation
 
+/-! Definition 1.1. -/
+
 def divides (a b : ℤ) : Prop :=
   ∃ n : ℤ, b = n * a
 
@@ -11,6 +13,8 @@ infix:50 " | " => divides
 
 def prime (p : ℕ) : Prop :=
   p ≥ 2 ∧ ∀ a : ℕ, ((a | p) → (a = 1 ∨ a = p))
+
+/-! Lemma 1.3. -/
 
 lemma divides_both_ways {a b : ℤ} (a_div_b : a | b) (b_div_a : b | a) : (a = b) ∨ (a = -b) := by
   -- Obtain the factorisations of a and b from the assumptions
@@ -73,10 +77,42 @@ lemma divides_two_nums {m a b : ℤ} (m_div_a : m | a) (m_div_b : m | b) : ∀ �
   -- Then m divides α * a + β * b
   exact Exists.intro (α * γ + β * δ) m_factors_linear_comb
 
+/-! Proposition 1.4. -/
+
 -- Product of primes
 theorem prime_factorisation {m : ℕ} (gt_two : m > 2) : ∃ factorisation : List ℕ, List.prod factorisation = m ∧ (∀ p ∈ factorisation, prime p) := by
+  -- Induct on n ≥ 2
   induction' m using Nat.strong_induction_on with n ih
-  sorry
+
+  -- Either n is prime or it isn't
+  cases Classical.em (prime n)
+
+  · rename_i n_prime
+    -- If n is prime then it's factorisation is just itself
+    use [n]
+    constructor
+    -- The product of the factorisation is trivially n
+    apply List.prod_singleton
+
+    intro p p_is_n
+    rw [List.eq_of_mem_singleton p_is_n]
+    -- n is prime by assumption
+    assumption
+
+  · rename_i n_composite
+    -- Factorising n
+    unfold prime at n_composite
+    push_neg at n_composite
+    specialize n_composite (le_of_lt gt_two)
+    obtain ⟨a, a_conditions⟩ := n_composite
+    obtain ⟨a_div_n, a_non_trivial⟩ := a_conditions
+    obtain ⟨b, a_factors_n⟩ := a_div_n
+    rw [mul_comm] at a_factors_n
+
+    -- Obtaining the prime factorisations of the factors of n
+    sorry
+
+/-! Definition 1.6. -/
 
 def common_multiple (a m n : ℕ) : Prop :=
   m | a ∧ n | a
@@ -91,18 +127,9 @@ def is_gcd (g m n : ℕ) : Prop := common_multiple g m n ∧ ∀ q : ℕ, (commo
 def coprime (m n : ℕ) : Prop :=
   is_gcd 1 m n
 
-lemma div_by_gcd_coprime {m n g : ℕ} (g_gcd : is_gcd g m n) : coprime (m / g) (n / g) := by
-  obtain ⟨g_common_mul, g_lowest_common_mul⟩ := g_gcd
-  obtain ⟨m_div_g, n_div_g⟩ := g_common_mul
-  obtain ⟨k, m_factors_g⟩ := m_div_g
-  obtain ⟨l, n_factors_g⟩ := n_div_g
+/-! Remark 1.7. -/
 
-  unfold coprime is_gcd common_multiple divides
-  constructor
-  · constructor
-    · use k
-      sorry
-    · sorry
+lemma div_by_gcd_coprime {m n g : ℕ} (g_gcd : is_gcd g m n) : coprime (m / g) (n / g) := by
   sorry
 
 end Prime_Factorisation
