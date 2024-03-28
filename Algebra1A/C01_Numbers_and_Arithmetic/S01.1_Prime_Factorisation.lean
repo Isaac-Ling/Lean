@@ -80,7 +80,7 @@ lemma divides_two_nums {m a b : ℤ} (m_div_a : m | a) (m_div_b : m | b) : ∀ �
 /-! Proposition 1.4. -/
 
 -- Product of primes
-theorem prime_factorisation {m : ℕ} (gt_two : m > 2) : ∃ factorisation : List ℕ, List.prod factorisation = m ∧ (∀ p ∈ factorisation, prime p) := by
+theorem prime_factorisation {m : ℕ} (ge_two : m ≥ 2) : ∃ factorisation : List ℕ, List.prod factorisation = m ∧ (∀ p ∈ factorisation, prime p) := by
   -- Induct on n ≥ 2
   induction' m using Nat.strong_induction_on with n ih
 
@@ -103,14 +103,18 @@ theorem prime_factorisation {m : ℕ} (gt_two : m > 2) : ∃ factorisation : Lis
     -- Factorising n
     unfold prime at n_composite
     push_neg at n_composite
-    specialize n_composite (le_of_lt gt_two)
+    specialize n_composite ge_two
     obtain ⟨a, a_conditions⟩ := n_composite
     obtain ⟨a_div_n, a_non_trivial⟩ := a_conditions
     obtain ⟨b, a_factors_n⟩ := a_div_n
     rw [mul_comm] at a_factors_n
 
     -- Obtaining the prime factorisations of the factors of n
-    sorry
+    have a_factorisation : ∃ factorisation : List ℕ, List.prod factorisation = a ∧ (∀ p ∈ factorisation, prime p) := by
+      specialize (ih a)
+      have a_lt_n : a < n := by
+        sorry
+
 
 /-! Definition 1.6. -/
 
