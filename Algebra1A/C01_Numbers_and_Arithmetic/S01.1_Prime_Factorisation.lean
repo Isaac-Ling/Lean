@@ -113,8 +113,10 @@ theorem prime_factorisation {m : ℕ} (ge_two : m ≥ 2) : ∃ factorisation : L
     have a_factorisation : ∃ factorisation : List ℕ, List.prod factorisation = a ∧ (∀ p ∈ factorisation, prime p) := by
       specialize (ih a)
       have a_lt_n : a < n := by
+        exact Nat.le_of_dvd (Nat.zero_lt_of_le ge_two) ()
         sorry
-
+      sorry
+    sorry
 
 /-! Definition 1.6. -/
 
