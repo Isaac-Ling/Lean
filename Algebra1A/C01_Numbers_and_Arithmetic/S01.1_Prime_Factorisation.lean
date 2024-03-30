@@ -104,16 +104,15 @@ theorem prime_factorisation {m : ℕ} (ge_two : m ≥ 2) : ∃ factorisation : L
     unfold prime at n_composite
     push_neg at n_composite
     specialize n_composite ge_two
-    obtain ⟨a, a_conditions⟩ := n_composite
-    obtain ⟨a_div_n, a_non_trivial⟩ := a_conditions
-    obtain ⟨b, a_factors_n⟩ := a_div_n
+    rcases n_composite with ⟨a, a_conditions⟩
+    rcases a_conditions with  ⟨a_div_n, a_non_trivial⟩
+    rcases a_div_n with ⟨b, a_factors_n⟩
     rw [mul_comm] at a_factors_n
 
     -- Obtaining the prime factorisations of the factors of n
     have a_factorisation : ∃ factorisation : List ℕ, List.prod factorisation = a ∧ (∀ p ∈ factorisation, prime p) := by
       specialize (ih a)
-      have a_lt_n : a < n := by
-        exact Nat.le_of_dvd (Nat.zero_lt_of_le ge_two) ()
+      have a_lt_n : a < n := Nat.le_of_dvd (Nat.zero_lt_of_lt ge_two) (Dvd.intro b a_factors_n)
         sorry
       sorry
     sorry
